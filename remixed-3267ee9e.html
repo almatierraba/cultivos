@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preguntas Frecuentes – Acceso Legal al Cannabis Medicinal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde-oscuro: #1a4a2e;
+    --verde-medio: #2d7a4f;
+    --verde-claro: #4caf78;
+    --verde-suave: #e8f5ee;
+    --verde-mint: #d0edd9;
+    --blanco: #ffffff;
+    --gris-texto: #2c2c2c;
+    --gris-suave: #f7faf8;
+    --borde: #b8ddc7;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--blanco);
+    color: var(--gris-texto);
+    line-height: 1.6;
+  }
+
+  /* LOGO */
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .logo-badge {
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--blanco);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  }
+  .logo-badge svg { display: block; }
+
+  /* HEADER */
+  header {
+    background: var(--verde-oscuro);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 32px 56px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--verde-claro);
+    margin-bottom: 20px;
+    border: 1px solid var(--verde-claro);
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 900;
+    color: var(--blanco);
+    line-height: 1.15;
+    max-width: 620px;
+    margin-bottom: 20px;
+  }
+
+  header h1 span {
+    color: var(--verde-claro);
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    max-width: 480px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* Hoja decorativa SVG */
+  .header-leaf {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  /* BARRA DE SECCIONES */
+  .nav-sections {
+    background: var(--verde-medio);
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    max-width: 100%;
+  }
+  .nav-sections::-webkit-scrollbar { display: none; }
+
+  .nav-sections a {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 14px 18px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-sections a:hover {
+    color: var(--blanco);
+    border-bottom-color: var(--verde-claro);
+  }
+
+  /* CONTENIDO */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* SECCIONES */
+  .section {
+    margin-top: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--verde-mint);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--verde-suave);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 17px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+  }
+
+  /* ITEMS FAQ */
+  .faq-item {
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    background: var(--blanco);
+    transition: box-shadow 0.2s;
+  }
+  .faq-item:hover {
+    box-shadow: 0 2px 12px rgba(45,122,79,0.1);
+  }
+
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    color: var(--verde-oscuro);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+  .faq-q:hover { background: var(--gris-suave); }
+  .faq-q.open { background: var(--verde-suave); }
+
+  .faq-chevron {
+    flex-shrink: 0;
+    margin-top: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--verde-mint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s, background 0.2s;
+    color: var(--verde-oscuro);
+    font-size: 13px;
+  }
+  .faq-q.open .faq-chevron {
+    transform: rotate(180deg);
+    background: var(--verde-claro);
+    color: white;
+  }
+
+  .faq-a {
+    display: none;
+    padding: 0 20px 20px 20px;
+    font-size: 14.5px;
+    color: #3d3d3d;
+    line-height: 1.75;
+    background: var(--verde-suave);
+    border-top: 1px dashed var(--borde);
+    padding-top: 16px;
+  }
+  .faq-a.show { display: block; }
+
+  .faq-a ul {
+    margin: 10px 0 0 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  .faq-a ul li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    font-size: 14px;
+  }
+  .faq-a ul li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--verde-claro);
+    font-size: 10px;
+    top: 9px;
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    vertical-align: middle;
+  }
+  .badge-green { background: #c8ecd4; color: var(--verde-oscuro); }
+  .badge-warn { background: #fff3cd; color: #7a5800; }
+  .badge-blue { background: #d0eaf8; color: #1a4a6e; }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--verde-mint);
+    border-left: 4px solid var(--verde-claro);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    font-size: 13.5px;
+    color: var(--verde-oscuro);
+    margin: 32px 0 0;
+    line-height: 1.65;
+  }
+  .callout strong { font-weight: 600; }
+
+  /* FOOTER */
+  footer {
+    background: var(--verde-oscuro);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  footer strong { color: rgba(255,255,255,0.8); }
+  .footer-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .footer-logo svg { display: block; }
+  .footer-info {
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+  .footer-divider {
+    width: 60px;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+    margin: 18px auto;
+  }
+
+  @media (max-width: 600px) {
+    .header-inner { padding: 44px 20px 40px; }
+    main { padding: 0 16px 60px; }
+    .nav-sections a { padding: 12px 14px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="header-leaf" width="420" height="420" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M210 10 C210 10 380 120 380 250 C380 360 300 410 210 410 C120 410 40 360 40 250 C40 120 210 10 210 10Z" fill="white"/>
+    <line x1="210" y1="10" x2="210" y2="410" stroke="white" stroke-width="3"/>
+    <line x1="210" y1="150" x2="120" y2="200" stroke="white" stroke-width="2"/>
+    <line x1="210" y1="200" x2="300" y2="240" stroke="white" stroke-width="2"/>
+    <line x1="210" y1="250" x2="100" y2="295" stroke="white" stroke-width="2"/>
+    <line x1="210" y1="300" x2="310" y2="340" stroke="white" stroke-width="2"/>
+  </svg>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="logo-badge">
+        <svg width="92" height="92" viewBox="0 0 1100 1100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="550" cy="550" r="540" fill="white"/>
+          <g fill="#1a4a2e">
+            <text x="550" y="420" font-family="'Playfair Display', serif" font-weight="900" font-size="230" text-anchor="middle">ALMA</text>
+            <text x="550" y="700" font-family="'Playfair Display', serif" font-weight="900" font-size="190" text-anchor="middle">TIERRA</text>
+            <rect x="300" y="750" width="500" height="10"/>
+            <text x="550" y="850" font-family="'Inter', sans-serif" font-weight="500" font-size="58" letter-spacing="10" text-anchor="middle">CULTIVOS</text>
+          </g>
+        </svg>
+      </div>
+      <span class="header-eyebrow">Ley 27.350 · Cannabis Medicinal · Argentina</span>
+    </div>
+    <h1>Preguntas frecuentes sobre el acceso <span>legal</span> al cannabis medicinal</h1>
+    <p class="header-sub">Todo lo que necesitás saber para entender el sistema, registrarte y acceder a tu tratamiento de forma segura y legal.</p>
+  </div>
+  <nav class="nav-sections">
+    <a href="#dispensario">¿Qué es un dispensario?</a>
+    <a href="#acceso">Cómo acceder</a>
+    <a href="#reprocann">REPROCANN</a>
+    <a href="#documentacion">Documentación</a>
+    <a href="#cultivo">Cultivo</a>
+    <a href="#legal">Aspectos legales</a>
+    <a href="#acompanamiento">Acompañamiento</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- SECCIÓN 1 -->
+  <section class="section" id="dispensario">
+    <div class="section-header">
+      <div class="section-icon">🏡</div>
+      <h2 class="section-title">¿Qué es un dispensario de cannabis medicinal?</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Qué es un dispensario de cannabis medicinal en Argentina?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        En Argentina el método de dispensación de inflorescencias se da mediante asociaciones civiles y fundaciones — organizaciones sin fines de lucro — autorizadas por la Ley de Cannabis Medicinal 27.350 a cultivar cannabis y entregárselo a sus pacientes registrados.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 2 -->
+  <section class="section" id="acceso">
+    <div class="section-header">
+      <div class="section-icon">🚪</div>
+      <h2 class="section-title">Cómo acceder</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Cómo accedo a estos beneficios?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        El primer paso es contar con indicación escrita por un médico que se encuentre registrado en la Red Federal de Registros de Profesionales de la Salud (REFEPS) y deberá contar con formación académica para la investigación y el tratamiento médico con cannabis medicinal. Con esa indicación en mano, podés inscribirte en el REPROCANN — Registro Programa Cannabis — que te otorga el certificado para recibir, cultivar y transportar legalmente.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Quiénes pueden vincularse al programa?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        <strong>Usuarios/Pacientes:</strong> las personas físicas que cuenten con indicación médica para el uso de cannabis medicinal, terapéutico y/o paliativo del dolor y sus derivados.
+        <br><br>
+        <strong>Cultivadores solidarios:</strong> personas que cultivan en nombre de un paciente registrado.
+        <br><br>
+        <strong>Personas jurídicas:</strong> asociaciones civiles y fundaciones sin fines de lucro debidamente autorizadas.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Necesito tener diagnóstico médico previo para poder asociarme?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Sí. Es obligatorio contar con una indicación o prescripción médica que avale el uso terapéutico del cannabis.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 3 -->
+  <section class="section" id="reprocann">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <h2 class="section-title">El REPROCANN</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Qué es el REPROCANN y qué te permite hacer?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Es el "carnet" oficial que emite el Ministerio de Salud y que acredita que sos un paciente autorizado. Según el rol que te corresponda, te habilita a:
+        <ul>
+          <li><strong>Autocultivarte</strong> — cultivás vos mismo, con hasta 9 plantas en floración.</li>
+          <li><strong>Recibir de un tercero cultivador</strong> — otra persona cultiva para vos (puede asistir hasta 2 pacientes en total).</li>
+          <li><strong>Vincularte a una asociación civil</strong> — la organización (dispensario) cultiva por vos.</li>
+        </ul>
+        <br>
+        En cualquiera de los tres casos, te permite transportar legalmente hasta <strong>40 gramos de flores secas</strong> o <strong>6 frascos de aceite de 30 ml</strong>, siempre con el certificado a mano — en papel o desde la app <em>Mi Argentina</em>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Cuánto tardan en procesar mi inscripción?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Los tiempos pueden variar, actualmente mínimo una semana máximo un mes.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 4 -->
+  <section class="section" id="documentacion">
+    <div class="section-header">
+      <div class="section-icon">📄</div>
+      <h2 class="section-title">Documentación necesaria</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Qué documentos tengo que presentar para inscribirme?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Se requiere:
+        <ul>
+          <li>DNI del solicitante</li>
+          <li>Prescripción médica actualizada</li>
+          <li>En caso de menores: DNI del representante legal y documentación que acredite el vínculo</li>
+          <li>Consentimiento Informado Bilateral firmado por el médico y el paciente</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿La prescripción puede ser de cualquier médico?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        No, la prescripción para el REPROCANN debe ser realizada por un médico registrado en la Red Federal de Registros de Profesionales de la Salud (REFEPS) y que cuente con formación académica específica en el tratamiento con cannabis medicinal. Además, el profesional debe presentar un "Consentimiento Informado Bilateral" ante el Programa Nacional para el Estudio y la Investigación del Uso Medicinal de la Planta de Cannabis.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 5 -->
+  <section class="section" id="cultivo">
+    <div class="section-header">
+      <div class="section-icon">🌿</div>
+      <h2 class="section-title">Cultivo y acceso al cannabis</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Puedo cultivar en mi casa una vez que esté registrado?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Sí. Una vez inscripto y con el certificado correspondiente, podés cultivar cannabis para uso medicinal personal en tu domicilio, dentro de los parámetros establecidos por la normativa vigente. El certificado es el respaldo legal para hacerlo sin problemas.
+        <br><span class="badge badge-green">Hasta 9 plantas en floración por paciente</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Cuánto puedo tener y transportar?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        La normativa establece los siguientes límites:
+        <ul>
+          <li><strong>Flores secas:</strong> hasta 40 gramos</li>
+          <li><strong>Aceite:</strong> hasta 6 frascos de 30 ml</li>
+          <li><strong>Plantas:</strong> hasta 9 en floración (autocultivador personal)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Si no quiero o no puedo cultivar, ¿cómo accedo?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Tenés dos alternativas:
+        <ul>
+          <li>Un <strong>cultivador solidario</strong>: otra persona autorizada que cultiva para vos</li>
+          <li>A través de una <strong>fundación o asociación civil autorizada</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 6 -->
+  <section class="section" id="legal">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <h2 class="section-title">Aspectos legales y protección</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿El registro me protege legalmente?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Sí. El certificado de inscripción en el REPROCANN acredita que tu actividad está autorizada dentro del marco legal. Es fundamental llevarlo siempre en papel y en la app <em>Mi Argentina</em> para mayor seguridad.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Mis datos personales y de salud quedan protegidos?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Sí. Los datos del programa están protegidos por la <strong>Ley de Protección de Datos Personales (Ley 25.326)</strong>. Solo tienen acceso las autoridades sanitarias y organismos de control competentes. Ningún dato puede ser divulgado salvo por orden judicial debidamente fundada.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Tiene algún costo asociarse a una fundación?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        La fundación funciona con aportes de membresía de sus asociados para poder sostenerse y brindar acompañamiento. Los montos y modalidades de pago se informan al momento de iniciar el proceso de vinculación.
+        <br><br>
+        <strong>El trámite ante el Estado (REPROCANN) es completamente gratuito.</strong> Los únicos costos posibles son los de obtención de documentación médica y los aportes a la fundación por el acompañamiento del proceso.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 7 -->
+  <section class="section" id="acompanamiento">
+    <div class="section-header">
+      <div class="section-icon">🤝</div>
+      <h2 class="section-title">Acompañamiento y funcionamiento</h2>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Qué tipo de acompañamiento ofrece una fundación?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        La fundación ofrece:
+        <ul>
+          <li>Asesoramiento en el proceso de inscripción al REPROCANN</li>
+          <li>Red de contacto con profesionales de salud habilitados</li>
+          <li>Soporte legal en caso de inconvenientes</li>
+          <li>Comunidad de apoyo entre usuarios</li>
+          <li>Orientación en cada renovación o modificación del registro</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Puedo renovar o actualizar mi registro si cambia mi situación de salud?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Sí. Los registros tienen una vigencia de <strong>3 años para autocultivadores</strong> y <strong>1 año para personas jurídicas</strong>. Si cambia tu diagnóstico o necesidades terapéuticas, podés actualizar tu expediente. La fundación te asesora en cada renovación o modificación necesaria.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        ¿Puedo desasociarme de la fundación si lo deseo?
+        <span class="faq-chevron">▾</span>
+      </button>
+      <div class="faq-a">
+        Sí, podés desasociarte en cualquier momento. Tu registro ante el organismo oficial es tuyo y no desaparece al desvincularte de la fundación. Podés continuar gestionándolo de forma autónoma o vincularte a otra organización avalada.
+      </div>
+    </div>
+  </section>
+
+  <div class="callout">
+    <strong>Nota importante:</strong> La normativa sobre cannabis medicinal puede ser actualizada por resolución ministerial. Siempre verificá la información antes de iniciar tu trámite.
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">
+    <svg width="70" height="70" viewBox="0 0 1100 1100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="550" cy="550" r="540" fill="white"/>
+      <g fill="#1a4a2e">
+        <text x="550" y="420" font-family="'Playfair Display', serif" font-weight="900" font-size="230" text-anchor="middle">ALMA</text>
+        <text x="550" y="700" font-family="'Playfair Display', serif" font-weight="900" font-size="190" text-anchor="middle">TIERRA</text>
+        <rect x="300" y="750" width="500" height="10"/>
+        <text x="550" y="850" font-family="'Inter', sans-serif" font-weight="500" font-size="58" letter-spacing="10" text-anchor="middle">CULTIVOS</text>
+      </g>
+    </svg>
+  </div>
+  <div class="footer-info">
+    @almatierra.cultivos · Mendoza - Buenos Aires
+  </div>
+  <div class="footer-divider"></div>
+  <strong>Marco legal: Ley 27.350 · Decreto Reglamentario 883/2020 · Resolución 800/2021 · Resolución 1780/2025</strong><br>
+  Este documento es informativo y no reemplaza el asesoramiento médico ni legal.
+</footer>
+
+<script>
+function toggle(btn) {
+  const answer = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-q.open').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.classList.remove('show');
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    answer.classList.add('show');
+  }
+}
+</script>
+</body>
+</html>
