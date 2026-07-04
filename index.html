@@ -115,14 +115,20 @@
   .nav-sections {
     background: var(--verde-medio);
     padding: 0 32px;
+    max-width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .nav-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 0;
-    max-width: 100%;
   }
 
-  .nav-sections a {
+  .nav-links a {
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.04em;
@@ -130,13 +136,16 @@
     text-decoration: none;
     padding: 14px 18px;
     white-space: nowrap;
+    overflow-wrap: anywhere;
     border-bottom: 2px solid transparent;
     transition: color 0.2s, border-color 0.2s;
   }
-  .nav-sections a:hover {
+  .nav-links a:hover {
     color: var(--blanco);
     border-bottom-color: var(--verde-claro);
   }
+
+  .mobile-nav-bar { display: none; }
 
   /* CONTENIDO */
   main {
@@ -148,6 +157,7 @@
   /* SECCIONES */
   .section {
     margin-top: 56px;
+    scroll-margin-top: 72px;
   }
 
   .section-header {
@@ -325,23 +335,119 @@
 
   @media (max-width: 600px) {
     .header-inner { padding: 44px 20px 40px; }
-    .header-top { gap: 18px; }
+    .header-top { flex-wrap: wrap; gap: 18px; }
+    .header-eyebrow { max-width: 100%; }
     .logo-badge img { width: 78px; height: 78px; }
     main { padding: 0 16px 60px; }
     .nav-sections {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0;
-      padding: 0 12px;
+      position: static;
+      padding: 0;
     }
-    .nav-sections a {
-      padding: 12px 10px;
-      font-size: 11px;
-      line-height: 1.25;
-      text-align: center;
+    .nav-links {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    .nav-links a {
+      padding: 13px 20px;
       white-space: normal;
     }
-    .nav-sections a:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .mobile-nav-bar {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: var(--verde-medio);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-100%);
+      transition: transform 0.24s ease, opacity 0.2s ease;
+    }
+    .mobile-nav-visible .mobile-nav-bar {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .mobile-nav-toggle {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      background: var(--verde-medio);
+      color: rgba(255,255,255,0.86);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .mobile-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .mobile-nav-brand img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--blanco);
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .mobile-nav-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nav-icon {
+      width: 22px;
+      height: 16px;
+      display: grid;
+      gap: 5px;
+    }
+    .nav-icon span {
+      display: block;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--blanco);
+      transform-origin: center;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .mobile-nav-bar.open .nav-icon span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .mobile-nav-bar.open .nav-icon span:nth-child(2) { opacity: 0; }
+    .mobile-nav-bar.open .nav-icon span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav-links {
+      display: grid;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: max-height 0.32s ease, opacity 0.22s ease, transform 0.32s ease;
+    }
+    .mobile-nav-bar.open .mobile-nav-links {
+      max-height: 420px;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .mobile-nav-links a {
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 14px 20px;
+      text-align: left;
+      text-decoration: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .section { scroll-margin-top: 64px; }
   }
 </style>
 </head>
@@ -366,7 +472,10 @@
     <h1>Preguntas frecuentes sobre el acceso <span>legal</span> al cannabis medicinal</h1>
     <p class="header-sub">Todo lo que necesitás saber para entender el sistema, registrarte y acceder a tu tratamiento de forma segura y legal.</p>
   </div>
-  <nav class="nav-sections">
+</header>
+
+<nav class="nav-sections" aria-label="Secciones">
+  <div class="nav-links" id="nav-menu">
     <a href="#dispensario">¿Qué es un dispensario?</a>
     <a href="#acceso">Cómo acceder</a>
     <a href="#reprocann">REPROCANN</a>
@@ -374,8 +483,31 @@
     <a href="#cultivo">Cultivo</a>
     <a href="#legal">Aspectos legales</a>
     <a href="#acompanamiento">Acompañamiento</a>
-  </nav>
-</header>
+  </div>
+</nav>
+
+<nav class="mobile-nav-bar" aria-label="Secciones rápidas">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav-menu">
+    <span class="mobile-nav-brand">
+      <img src="almatierra-logo.webp" alt="" width="30" height="30">
+      <span class="mobile-nav-title">Acceso legal al cannabis medicinal</span>
+    </span>
+    <span class="nav-icon" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+  <div class="mobile-nav-links" id="mobile-nav-menu">
+    <a href="#dispensario">¿Qué es un dispensario?</a>
+    <a href="#acceso">Cómo acceder</a>
+    <a href="#reprocann">REPROCANN</a>
+    <a href="#documentacion">Documentación</a>
+    <a href="#cultivo">Cultivo</a>
+    <a href="#legal">Aspectos legales</a>
+    <a href="#acompanamiento">Acompañamiento</a>
+  </div>
+</nav>
 
 <main>
 
@@ -672,6 +804,54 @@ function toggle(btn) {
     answer.classList.add('show');
   }
 }
+
+const primaryNav = document.querySelector('.nav-sections');
+const mobileNavBar = document.querySelector('.mobile-nav-bar');
+const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+const mobileNav = window.matchMedia('(max-width: 600px)');
+let mobileNavPoint = 0;
+
+function closeNavMenu() {
+  mobileNavBar.classList.remove('open');
+  mobileNavToggle.setAttribute('aria-expanded', 'false');
+}
+
+function setMobileNavPoint() {
+  mobileNavPoint = primaryNav.getBoundingClientRect().bottom + window.scrollY;
+}
+
+function updateMobileNav() {
+  if (!mobileNav.matches) {
+    document.body.classList.remove('mobile-nav-visible');
+    closeNavMenu();
+    return;
+  }
+
+  const shouldShow = window.scrollY > mobileNavPoint + 8;
+  document.body.classList.toggle('mobile-nav-visible', shouldShow);
+  if (!shouldShow) closeNavMenu();
+}
+
+mobileNavToggle.addEventListener('click', () => {
+  const isOpen = mobileNavBar.classList.toggle('open');
+  mobileNavToggle.setAttribute('aria-expanded', String(isOpen));
+});
+
+document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (mobileNav.matches) closeNavMenu();
+  });
+});
+
+window.addEventListener('load', () => {
+  setMobileNavPoint();
+  updateMobileNav();
+});
+window.addEventListener('resize', () => {
+  setMobileNavPoint();
+  updateMobileNav();
+});
+window.addEventListener('scroll', updateMobileNav, { passive: true });
 </script>
 </body>
 </html>
