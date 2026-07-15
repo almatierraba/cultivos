@@ -1,0 +1,66 @@
+name: Versioning
+
+on:
+  pull_request:
+    paths:
+      - VERSION
+      - CHANGELOG.md
+      - RELEASING.md
+      - .github/workflows/versioning.yml
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate version metadata
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Validate VERSION and CHANGELOG
+        shell: python
+        run: |
+          import os
+          import re
+          from pathlib import Path
+
+          version = Path("VERSION").read_text(encoding="utf-8").strip()
+          changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
+
+          if not re.fullmatch(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)", version):
+              raise SystemExit(f"VERSION is not valid SemVer: {version!r}")
+
+          heading = rf"^## \[{re.escape(version)}\](?: - \d{{4}}-\d{{2}}-\d{{2}})?$"
+          if not re.search(heading, changelog, flags=re.MULTILINE):
+              raise SystemExit(f"CHANGELOG.md has no section for {version}")
+
+          if os.environ.get("GITHUB_REF_TYPE") == "tag":
+              expected_tag = f"v{version}"
+              actual_tag = os.environ["GITHUB_REF_NAME"]
+              if actual_tag != expected_tag:
+                  raise SystemExit(
+                      f"Tag {actual_tag!r} does not match VERSION ({expected_tag!r})"
+                  )
+
+          print(f"Version metadata is valid: {version}")
+
+  release:
+    name: Create GitHub Release
+    if: github.ref_type == 'tag'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" --verify-tag --title "$TAG" --generate-notes
