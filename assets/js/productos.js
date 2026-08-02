@@ -5,7 +5,7 @@
 
 /* Única fuente de verdad para el host de imágenes.
    Cambiar solo esta línea si se migra de CDN. */
-var CDN_BASE = 'https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v2/img';
+var CDN_BASE = 'https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v4/img';
 
 var PRODUCTOS = [
   {

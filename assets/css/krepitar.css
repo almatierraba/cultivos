@@ -11,25 +11,22 @@
    de fuentes. font-display:swap evita el texto invisible mientras cargan. */
 @font-face {
   font-family: 'Stay Chill';
-  src: url('https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v2/fonts/staychill.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v4/fonts/staychill.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-/* Graffiti City no tiene dibujados los glifos acentuados: declara Ñ, Á, É, Í,
-   Ó, Ú (y minúsculas) en su cmap, pero vacíos, sin contornos. Como el glifo
-   "existe", el navegador no hace fallback y el carácter sale invisible:
-   "AÑOS" se renderiza "A OS". El unicode-range corta la fuente antes de
-   U+00C0, así que todo lo acentuado cae a Stay Chill —que sí está completa—
-   en lugar de desaparecer. Por eso, además, los títulos usan Stay Chill y
-   esta queda para textos cortos y controlados. */
+/* La Graffiti City original venía sin los glifos acentuados dibujados:
+   declaraba Ñ, Á, É, Í, Ó, Ú en su cmap pero con contornos vacíos, así que
+   el navegador no hacía fallback y el carácter salía invisible ("AÑOS" se
+   veía "A OS"). Los 14 glifos se compusieron a partir de su letra base en la
+   copia que sirve el CDN, por eso acá no hace falta ningún unicode-range. */
 @font-face {
   font-family: 'Graffiti City';
-  src: url('https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v2/fonts/graffiti-city.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v4/fonts/graffiti-city.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+0000-00BF;
 }
 
 /* ---------- Tokens ---------- */
@@ -48,9 +45,9 @@
   --degradado: linear-gradient(45deg, var(--magenta) 0%, var(--rosa) 50%, var(--naranja) 100%);
 
   /* Tipografía */
-  --display:  'Stay Chill', cursive;                      /* títulos primarios */
-  --titulo:   'Stay Chill', cursive;                      /* títulos secundarios */
-  --graffiti: 'Graffiti City', 'Stay Chill', cursive;     /* solo textos cortos sin acentos */
+  --display:  'Graffiti City', 'Stay Chill', cursive;     /* títulos: trazo fino */
+  --titulo:   'Graffiti City', 'Stay Chill', cursive;
+  --graffiti: 'Graffiti City', 'Stay Chill', cursive;
   --texto-fuente: 'Montserrat', system-ui, sans-serif;
 
   /* Escala fluida: sin media queries para el tamaño de texto */
@@ -379,9 +376,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
     --borde-fuerte: rgba(247, 244, 240, .3);
   }
 }
-/* Los títulos van en caja baja a propósito: la L mayúscula de Stay Chill se
-   confunde con una Z ("DEL INDOOR" se lee "DEZ INDOOR"). En caja baja la
-   fuente es inequívoca y conserva su carácter. */
+/* Los títulos van en caja baja a propósito. Viene de cuando usaban Stay Chill,
+   cuya L mayúscula se confunde con una Z ("DEL INDOOR" se leía "DEZ INDOOR");
+   se mantiene porque Stay Chill sigue siendo el fallback y porque el trazo de
+   Graffiti City respira mejor en caja baja. */
 .seccion-titulo {
   font-family: var(--titulo);
   font-size: var(--t-h2);

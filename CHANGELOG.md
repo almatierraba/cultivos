@@ -16,7 +16,7 @@ Refactor completo: el sitio pasa de ser una única página de preguntas frecuent
 - Catálogo con los 11 productos Puffco, generado desde `assets/js/productos.js`, con galería de imágenes por producto.
 - Secciones «Literatura» y «Contacto» como páginas en preparación.
 - Selector de tema claro / sistema / oscuro, con la preferencia guardada y aplicada antes del primer pintado.
-- Identidad visual de Krepitar según el manual de KOT Design Studio: paleta, degradado y tipografías de marca.
+- Identidad visual de Krepitar según el manual de KOT Design Studio: paleta, degradado y tipografías de marca. Los títulos usan Graffiti City, de trazo más liviano que Stay Chill.
 - `sitemap.xml`, `robots.txt`, favicons y metadatos Open Graph en todas las páginas.
 - `.gitignore` para configuración local y material de origen.
 
@@ -30,7 +30,7 @@ Refactor completo: el sitio pasa de ser una única página de preguntas frecuent
 ### Fixed
 
 - Los títulos ya no van en versalitas: la `L` mayúscula de Stay Chill se confundía con una `Z`.
-- Las eñes y las vocales acentuadas ya no desaparecen en los títulos. Graffiti City declara esos glifos pero los tiene vacíos, así que el navegador no hacía fallback y el carácter se perdía; ahora la fuente está acotada por `unicode-range`.
+- Las eñes y las vocales acentuadas ya no desaparecen en los títulos. Graffiti City declaraba esos glifos pero con contornos vacíos, así que el navegador no hacía fallback y el carácter se perdía; se dibujaron los 14 glifos faltantes componiéndolos desde su letra base.
 
 ### Removed
 
