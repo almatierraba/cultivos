@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Krepitar — Del indoor al mundo</title>
-<meta name="description" content="Krepitar nace de diez años de trabajo junto a la planta, el camino recorrido por Almatierra Cultivos. Catálogo de vaporizadores Puffco e información sobre el acceso legal al cannabis medicinal en Argentina.">
+<title>Catálogo — Krepitar</title>
+<meta name="description" content="Vaporizadores y accesorios Puffco: Peak, Peak Pro 3DXL, Pivot, Proxy, Proxy Core, Hot Knife, cámaras 3D, Travel Glass, Travel Case y Joystick Cap.">
 <meta name="theme-color" content="#070707">
-<link rel="canonical" href="https://almatierraba.github.io/cultivos/">
+<link rel="canonical" href="https://almatierraba.github.io/cultivos/catalogo.html">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_AR">
 <meta property="og:site_name" content="Krepitar">
-<meta property="og:title" content="Krepitar — Del indoor al mundo">
-<meta property="og:description" content="Diez años de trabajo junto a la planta. Catálogo Puffco e información sobre el acceso legal al cannabis medicinal en Argentina.">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v4/brand/favicon-512.png">
+<meta property="og:title" content="Catálogo — Krepitar">
+<meta property="og:description" content="Vaporizadores y accesorios Puffco disponibles en Krepitar.">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v4/img/peak-pro-3dxl/01.webp">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v4/brand/favicon.ico" sizes="any">
@@ -53,7 +53,7 @@
       </button>
     </div>
     <nav class="menu" id="menu-principal" aria-label="Principal">
-      <a href="catalogo.html">Catálogo</a>
+      <a href="catalogo.html" aria-current="page">Catálogo</a>
       <a href="literatura.html">Literatura</a>
       <a href="legal.html">Info legal</a>
       <a href="contacto.html">Contacto</a>
@@ -66,66 +66,21 @@
   <section class="hero grano">
     <div class="hero-banda" aria-hidden="true"></div>
     <div class="contenedor hero-inner">
-      <p class="hero-kicker revelar">Krepitar</p>
-      <h1 class="hero-titulo revelar">Del indoor<br>al mundo</h1>
-      <p class="hero-bajada revelar">Diez años de trabajo junto a la planta. Hoy esa experiencia sale al mundo para hablar sin miedos.</p>
-      <div class="acciones revelar">
-        <a class="boton boton-degradado" href="catalogo.html">Ver el catálogo</a>
-        <a class="boton boton-borde" href="legal.html">Acceso legal</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="seccion seccion-clara">
-    <div class="contenedor">
-      <span class="eyebrow">Quiénes somos</span>
-      <h2 class="seccion-titulo">Diez años junto a la planta</h2>
-      <div class="seccion-intro">
-        <p>Krepitar es el resultado de diez años de trabajo junto a la planta, el camino recorrido por <strong>Almatierra Cultivos</strong>, la agrupación formada por los hermanos Fernando y Jimena Arias: cultivo, investigación y escritura sobre usos medicinales, beneficios y el marco legal del cannabis en Argentina.</p>
-        <p style="margin-top:1.2rem">Hoy esa experiencia sale al mundo para hablar sin miedos. <strong>Si estás acá, ya sos parte.</strong></p>
-      </div>
+      <p class="hero-kicker revelar">Productos a la venta</p>
+      <h1 class="hero-titulo revelar">Catálogo</h1>
+      <p class="hero-bajada revelar">Vaporizadores de concentrados y accesorios Puffco. Tecnología de cámara 3D, control de temperatura en tiempo real y app Puffco Connect.</p>
     </div>
   </section>
 
   <section class="seccion">
     <div class="contenedor">
-      <nav class="accesos" aria-label="Secciones del sitio">
+      <nav class="indice" id="indice" aria-label="Índice de productos"></nav>
+      <div class="catalogo" id="catalogo"></div>
 
-        <a class="acceso" href="catalogo.html">
-          <span class="acceso-num">01</span>
-          <span>
-            <span class="acceso-nombre">Catálogo</span>
-            <span class="acceso-desc">Vaporizadores y accesorios Puffco disponibles.</span>
-          </span>
-        </a>
-
-        <a class="acceso" href="literatura.html">
-          <span class="acceso-num">02</span>
-          <span>
-            <span class="acceso-nombre">Literatura</span>
-            <span class="acceso-desc">Investigación y escritura sobre la planta.</span>
-          </span>
-          <span class="acceso-pronto">Próximamente</span>
-        </a>
-
-        <a class="acceso" href="legal.html">
-          <span class="acceso-num">03</span>
-          <span>
-            <span class="acceso-nombre">Info legal</span>
-            <span class="acceso-desc">Ley 27.350, REPROCANN y acceso al cannabis medicinal.</span>
-          </span>
-        </a>
-
-        <a class="acceso" href="contacto.html">
-          <span class="acceso-num">04</span>
-          <span>
-            <span class="acceso-nombre">Contacto</span>
-            <span class="acceso-desc">Escribinos para vincularte o consultar.</span>
-          </span>
-          <span class="acceso-pronto">Próximamente</span>
-        </a>
-
-      </nav>
+      <p class="aviso" style="margin-top:clamp(3rem,7vw,5rem)">
+        <strong>Importante:</strong> ninguno de estos productos es para usar con tabaco, líquidos electrónicos con nicotina,
+        nicotina sintética o sustitutos de la nicotina. Venta exclusiva a personas mayores de edad.
+      </p>
     </div>
   </section>
 
@@ -162,6 +117,8 @@
   </div>
 </footer>
 
+<script src="assets/js/productos.js"></script>
+<script src="assets/js/catalogo.js"></script>
 <script src="assets/js/sitio.js"></script>
 </body>
 </html>
