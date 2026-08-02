@@ -1,0 +1,11 @@
+# Configuración local de herramientas
+.claude/launch.json
+
+# Material de origen (manuales de marca, documentos del estudio).
+# No se versiona: son fuentes de trabajo, no parte del sitio publicado.
+docs/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini

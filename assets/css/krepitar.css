@@ -1,0 +1,653 @@
+/* ============================================================
+   KREPITAR — sistema de diseño
+   Basado en "Mini Branding KREPITAR FINAL" (KOT Design Studio).
+   Un solo archivo: el sitio es estático y sin build, y una sola
+   petición de CSS rinde mejor que cuatro parciales.
+   ============================================================ */
+
+/* ---------- Tipografías de marca ----------
+   Montserrat viene de Google Fonts (declarado en el <head> de cada página).
+   Stay Chill y Graffiti City se auto-hospedan porque no están en ningún CDN
+   de fuentes. font-display:swap evita el texto invisible mientras cargan. */
+@font-face {
+  font-family: 'Stay Chill';
+  src: url('https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v2/fonts/staychill.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+/* Graffiti City no tiene dibujados los glifos acentuados: declara Ñ, Á, É, Í,
+   Ó, Ú (y minúsculas) en su cmap, pero vacíos, sin contornos. Como el glifo
+   "existe", el navegador no hace fallback y el carácter sale invisible:
+   "AÑOS" se renderiza "A OS". El unicode-range corta la fuente antes de
+   U+00C0, así que todo lo acentuado cae a Stay Chill —que sí está completa—
+   en lugar de desaparecer. Por eso, además, los títulos usan Stay Chill y
+   esta queda para textos cortos y controlados. */
+@font-face {
+  font-family: 'Graffiti City';
+  src: url('https://cdn.jsdelivr.net/gh/almatierraba/krepitar-assets@v2/fonts/graffiti-city.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00BF;
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Paleta corporativa, HEX exactos del manual */
+  --rosa:          #f42b81;   /* color 1 */
+  --naranja:       #f57c1f;   /* color 2 */
+  --magenta:       #f727c8;   /* color 3 */
+  --amarillo:      #ffb113;   /* color 4 */
+  --negro:         #070707;   /* color 5 */
+  --gris:          #7a7875;   /* color 6 */
+  --gris-claro:    #e2ded9;   /* color 7 */
+  --hueso:         #f7f4f0;   /* color 8 */
+
+  /* Degradado 1 del manual: colores 3/1/2 en tercios, a 45° */
+  --degradado: linear-gradient(45deg, var(--magenta) 0%, var(--rosa) 50%, var(--naranja) 100%);
+
+  /* Tipografía */
+  --display:  'Stay Chill', cursive;                      /* títulos primarios */
+  --titulo:   'Stay Chill', cursive;                      /* títulos secundarios */
+  --graffiti: 'Graffiti City', 'Stay Chill', cursive;     /* solo textos cortos sin acentos */
+  --texto-fuente: 'Montserrat', system-ui, sans-serif;
+
+  /* Escala fluida: sin media queries para el tamaño de texto */
+  --t-hero:  clamp(3rem, 12vw, 8.5rem);
+  --t-h1:    clamp(2.2rem, 7vw, 4.5rem);
+  --t-h2:    clamp(1.7rem, 4.5vw, 3rem);
+  --t-h3:    clamp(1.15rem, 2.2vw, 1.5rem);
+  --t-base:  clamp(1rem, 1.05vw, 1.125rem);
+  --t-mini:  0.78rem;
+
+  --ancho:   1240px;
+  --gutter:  clamp(1.25rem, 5vw, 4rem);
+  --radio:   4px;
+
+  /* El tracking de 4pt que pide el manual para títulos primarios */
+  --track-display: 0.045em;
+
+  /* ---- Roles semánticos ----
+     Los colores de arriba son la paleta fija de marca y no cambian nunca.
+     Estos son los que usa el resto de la hoja y los que el tema reasigna. */
+  --fondo:        var(--negro);
+  --texto:        var(--hueso);
+  --texto-suave:  var(--gris-claro);
+  --fondo-alt:    var(--hueso);   /* bloques invertidos respecto del fondo */
+  --texto-alt:    var(--negro);
+  --borde:        rgba(247, 244, 240, .14);
+  --borde-fuerte: rgba(247, 244, 240, .25);
+  --velo:         rgba(7, 7, 7, .82);
+  --sombra-media: rgba(122, 120, 117, .1);
+}
+
+/* Tema claro. Se aplica por elección explícita (data-tema="claro") o, en modo
+   sistema, cuando el sistema operativo lo pide. Los dos selectores existen
+   porque "sistema" no debe pisar una elección manual. */
+:root[data-tema="claro"] {
+  --fondo:        var(--hueso);
+  --texto:        var(--negro);
+  --texto-suave:  #4a4845;        /* gris del manual oscurecido: #7a7875 no llega a 4.5:1 sobre hueso */
+  --fondo-alt:    var(--negro);
+  --texto-alt:    var(--hueso);
+  --borde:        rgba(7, 7, 7, .14);
+  --borde-fuerte: rgba(7, 7, 7, .28);
+  --velo:         rgba(247, 244, 240, .86);
+  --sombra-media: rgba(122, 120, 117, .16);
+}
+@media (prefers-color-scheme: light) {
+  :root[data-tema="sistema"] {
+    --fondo:        var(--hueso);
+    --texto:        var(--negro);
+    --texto-suave:  #4a4845;
+    --fondo-alt:    var(--negro);
+    --texto-alt:    var(--hueso);
+    --borde:        rgba(7, 7, 7, .14);
+    --borde-fuerte: rgba(7, 7, 7, .28);
+    --velo:         rgba(247, 244, 240, .86);
+    --sombra-media: rgba(122, 120, 117, .16);
+  }
+}
+
+/* ---------- Reset acotado ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--texto-fuente);
+  transition: background-color .25s ease, color .25s ease;
+  font-weight: 500;                 /* Montserrat Medium = texto base */
+  font-size: var(--t-base);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+h1, h2, h3, p, ul, ol { margin: 0; }
+ul { padding-left: 1.15rem; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+/* Foco visible y consistente: obligatorio para navegación por teclado */
+:focus-visible {
+  outline: 3px solid var(--amarillo);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Grano ----------
+   El manual usa degradados con textura granulada. Se reproduce con una
+   turbulencia SVG embebida: sin peticiones extra y escala a cualquier tamaño. */
+.grano::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .42;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Utilidades ---------- */
+.contenedor { width: min(100% - var(--gutter) * 2, var(--ancho)); margin-inline: auto; }
+.solo-lectores {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.texto-degradado {
+  background: var(--degradado);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Cabecera ---------- */
+.sitio-cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--velo);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--borde);
+}
+.cabecera-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: .85rem;
+}
+.marca { display: flex; align-items: center; gap: .7rem; text-decoration: none; }
+
+/* El logo es un SVG negro servido como imagen. Una sola descarga sirve para
+   los dos temas: sobre fondo oscuro se invierte por filtro. Se descartó
+   usarlo como mask-image porque el SVG lleva fill="currentColor" y, al
+   resolverse fuera de contexto, el recorte salía invertido. */
+.marca-logo,
+.pie-logo {
+  display: block;
+  filter: invert(1);
+}
+:root[data-tema="claro"] .marca-logo,
+:root[data-tema="claro"] .pie-logo { filter: none; }
+@media (prefers-color-scheme: light) {
+  :root[data-tema="sistema"] .marca-logo,
+  :root[data-tema="sistema"] .pie-logo { filter: none; }
+}
+/* Dentro de un bloque invertido el fondo vuelve a ser oscuro, así que el
+   logo del pie se invierte al revés que la página. */
+.seccion-clara .pie-logo { filter: invert(1); }
+
+.marca-logo { width: 132px; height: 83px; }
+.marca-iso { width: 34px; }
+
+.menu { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2.2rem); }
+.menu a {
+  font-size: var(--t-mini);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-block: .4rem;
+  position: relative;
+  white-space: nowrap;
+}
+.menu a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: var(--degradado);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .28s ease;
+}
+.menu a:hover::after, .menu a[aria-current="page"]::after { transform: scaleX(1); }
+.menu a[aria-current="page"] { color: var(--rosa); }
+
+/* ---------- Selector de tema ----------
+   Tres opciones reales (claro / sistema / oscuro) en un radiogroup: es un
+   control de estado, no un botón que cicla, así que el usuario ve en cuál
+   está sin tener que probar. */
+.tema {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 100px;
+}
+.tema-opcion {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--texto);
+  opacity: .5;
+  transition: opacity .2s ease, background-color .2s ease, color .2s ease;
+}
+.tema-opcion:hover { opacity: 1; }
+.tema-opcion svg { width: 16px; height: 16px; display: block; }
+.tema-opcion[aria-checked="true"] {
+  opacity: 1;
+  background: var(--degradado);
+  color: var(--negro);
+}
+
+.menu-boton { display: none; width: 34px; height: 26px; position: relative; }
+.menu-boton span {
+  position: absolute; left: 0; width: 100%; height: 2.5px;
+  background: var(--texto); border-radius: 2px; transition: transform .3s ease, opacity .2s ease;
+}
+.menu-boton span:nth-child(1) { top: 2px; }
+.menu-boton span:nth-child(2) { top: 11.5px; }
+.menu-boton span:nth-child(3) { top: 21px; }
+.menu-boton[aria-expanded="true"] span:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+.menu-boton[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-boton[aria-expanded="true"] span:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
+/* El selector queda fuera del menú desplegable: tiene que estar siempre a mano,
+   también con el menú cerrado en pantallas chicas. */
+.cabecera-acciones { display: flex; align-items: center; gap: 1rem; order: 3; }
+.menu { order: 2; margin-left: auto; }
+
+@media (max-width: 860px) {
+  .menu-boton { display: block; }
+  .menu {
+    position: fixed;
+    inset: 62px 0 auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--fondo);
+    border-bottom: 1px solid var(--borde);
+    padding: .5rem var(--gutter) 1.75rem;
+    transform: translateY(-120%);
+    transition: transform .34s cubic-bezier(.4, 0, .2, 1);
+  }
+  .menu[data-abierto="true"] { transform: translateY(0); }
+  .menu a { font-size: .95rem; padding-block: .95rem; border-bottom: 1px solid var(--borde); }
+  .menu a::after { display: none; }
+}
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; }
+.hero-banda {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: clamp(120px, 34vw, 480px);
+  background: var(--degradado);
+}
+.hero-inner {
+  position: relative;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding-block: clamp(4.5rem, 14vh, 9rem);
+}
+.hero-titulo {
+  font-family: var(--display);
+  font-size: var(--t-hero);
+  line-height: .92;
+  letter-spacing: var(--track-display);
+  margin: 0;
+}
+.hero-bajada {
+  font-size: clamp(1.05rem, 1.9vw, 1.4rem);
+  max-width: 46ch;
+  color: var(--texto-suave);
+}
+.hero-kicker {
+  font-family: var(--graffiti);
+  font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+  color: var(--amarillo);
+  letter-spacing: .02em;
+}
+
+/* ---------- Botones ---------- */
+.acciones { display: flex; flex-wrap: wrap; gap: .9rem; }
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .95rem 1.9rem;
+  font-size: var(--t-mini);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+}
+.boton-primario { background: var(--texto); color: var(--fondo); }
+.boton-primario:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(244, 43, 129, .38); }
+.boton-degradado { background: var(--degradado); color: var(--negro); }
+.boton-degradado:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(244, 43, 129, .45); }
+.boton-borde { border: 2px solid currentColor; }
+.boton-borde:hover { background: var(--texto); color: var(--fondo); transform: translateY(-2px); }
+
+/* ---------- Secciones ---------- */
+.seccion { padding-block: clamp(3.5rem, 9vh, 7rem); }
+/* Bloque invertido respecto del fondo de página. Reasigna los roles en vez de
+   fijar dos colores, para que todo lo que tenga adentro (bordes, texto suave,
+   botones) se invierta con él y siga funcionando en los dos temas. */
+.seccion-clara {
+  --fondo:        var(--fondo-alt);
+  --texto:        var(--texto-alt);
+  --texto-suave:  #4a4845;
+  --borde:        rgba(7, 7, 7, .16);
+  --borde-fuerte: rgba(7, 7, 7, .3);
+  background: var(--fondo);
+  color: var(--texto);
+}
+:root[data-tema="claro"] .seccion-clara,
+:root[data-tema="oscuro"] .seccion-clara { --texto-suave: var(--gris-claro); }
+:root[data-tema="claro"] .seccion-clara {
+  --borde: rgba(247, 244, 240, .18);
+  --borde-fuerte: rgba(247, 244, 240, .3);
+}
+@media (prefers-color-scheme: light) {
+  :root[data-tema="sistema"] .seccion-clara {
+    --texto-suave: var(--gris-claro);
+    --borde: rgba(247, 244, 240, .18);
+    --borde-fuerte: rgba(247, 244, 240, .3);
+  }
+}
+/* Los títulos van en caja baja a propósito: la L mayúscula de Stay Chill se
+   confunde con una Z ("DEL INDOOR" se lee "DEZ INDOOR"). En caja baja la
+   fuente es inequívoca y conserva su carácter. */
+.seccion-titulo {
+  font-family: var(--titulo);
+  font-size: var(--t-h2);
+  line-height: 1.05;
+  letter-spacing: var(--track-display);
+  margin-bottom: 2.5rem;
+}
+.seccion-intro { max-width: 62ch; font-size: clamp(1.05rem, 1.6vw, 1.25rem); }
+.eyebrow {
+  display: inline-block;
+  font-size: var(--t-mini);
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--rosa);
+  margin-bottom: .9rem;
+}
+
+/* ---------- Accesos de la home ---------- */
+.accesos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  background: var(--borde);
+  border: 1px solid var(--borde);
+}
+.acceso {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3.5rem;
+  min-height: 250px;
+  padding: 1.75rem;
+  background: var(--fondo);
+  text-decoration: none;
+  transition: color .3s ease;
+}
+.acceso::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--degradado);
+  transform: translateY(101%);
+  transition: transform .42s cubic-bezier(.4, 0, .2, 1);
+}
+.acceso:hover::before { transform: translateY(0); }
+.acceso:hover { color: var(--negro); }
+.acceso > * { position: relative; }
+.acceso-num { font-size: var(--t-mini); font-weight: 700; letter-spacing: .2em; opacity: .55; }
+.acceso-nombre {
+  display: block;
+  font-family: var(--titulo);
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: var(--track-display);
+}
+.acceso-desc { font-size: .92rem; color: var(--texto-suave); }
+.acceso:hover .acceso-desc { color: var(--negro); }
+.acceso-pronto {
+  align-self: flex-start;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: .25rem .6rem;
+  border: 1px solid currentColor;
+  border-radius: 100px;
+}
+
+/* ---------- Catálogo ---------- */
+.catalogo { display: grid; gap: clamp(3.5rem, 8vw, 7rem); }
+.producto {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  scroll-margin-top: 90px;
+}
+.producto:nth-child(even) .producto-media { order: 2; }
+@media (max-width: 820px) {
+  .producto { grid-template-columns: 1fr; }
+  .producto:nth-child(even) .producto-media { order: 0; }
+}
+
+.producto-media { position: relative; }
+/* Fondo claro fijo, no el degradado de marca: parte de las fotos de producto
+   vienen con fondo blanco opaco y sobre el degradado se recortaban como un
+   rectángulo pegado. Con fondo claro las 72 se ven parejas, tengan o no alfa.
+   El degradado aparece en el marco al pasar el mouse. */
+.producto-figura {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radio);
+  background: var(--hueso);
+  box-shadow: inset 0 0 0 1px var(--borde);
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  transition: box-shadow .3s ease;
+}
+.producto:hover .producto-figura { box-shadow: inset 0 0 0 3px var(--rosa); }
+.producto-figura img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 8%;
+  position: relative;
+  z-index: 1;
+}
+.producto-nombre {
+  font-family: var(--titulo);
+  font-size: var(--t-h2);
+  line-height: 1.02;
+  letter-spacing: var(--track-display);
+  margin-bottom: .5rem;
+}
+.producto-tagline {
+  font-family: var(--display);
+  font-size: var(--t-h3);
+  letter-spacing: var(--track-display);
+  color: var(--amarillo);
+  margin-bottom: 1.1rem;
+}
+.producto-desc { color: var(--texto-suave); }
+.producto-datos { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.4rem; }
+.chip {
+  font-size: var(--t-mini);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .35rem .85rem;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 100px;
+}
+.producto-incluye { margin-top: 1.3rem; font-size: .95rem; }
+.producto-incluye strong { display: block; margin-bottom: .3rem; }
+.producto-notas {
+  margin-top: 1.3rem;
+  padding-left: .9rem;
+  border-left: 2px solid var(--rosa);
+  font-size: .84rem;
+  color: var(--texto-suave);
+  font-weight: 400;
+}
+.producto-notas p { margin-block: .3rem; }
+
+/* Miniaturas */
+.miniaturas { display: flex; gap: .5rem; margin-top: .7rem; flex-wrap: wrap; }
+.miniatura {
+  width: 62px; height: 62px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radio);
+  overflow: hidden;
+  background: var(--gris-claro);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.miniatura img { width: 100%; height: 100%; object-fit: contain; padding: 6%; }
+.miniatura:hover { transform: translateY(-2px); }
+.miniatura[aria-current="true"] { border-color: var(--rosa); }
+
+/* Índice del catálogo */
+.indice { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: clamp(2.5rem, 6vw, 4rem); }
+.indice a {
+  font-size: var(--t-mini);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: .5rem 1rem;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 100px;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.indice a:hover { background: var(--texto); color: var(--fondo); border-color: var(--texto); }
+
+/* ---------- FAQ / legal ---------- */
+.legal-seccion { margin-bottom: clamp(2.5rem, 6vw, 4rem); scroll-margin-top: 90px; }
+.legal-seccion h2 {
+  font-family: var(--titulo);
+  font-size: calc(var(--t-h3) * 1.3);
+  letter-spacing: var(--track-display);
+  padding-bottom: .7rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 2px solid var(--texto);
+}
+.faq { border-bottom: 1px solid var(--borde); }
+.faq-pregunta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  text-align: left;
+  padding: 1.15rem 0;
+  font-weight: 600;
+  font-size: 1.02rem;
+  transition: color .2s ease;
+}
+.faq-pregunta:hover { color: var(--rosa); }
+.faq-chevron { flex-shrink: 0; transition: transform .3s ease; font-size: .8em; }
+.faq-pregunta[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); }
+.faq-pregunta[aria-expanded="true"] { color: var(--rosa); }
+/* La animación va sobre grid-template-rows: transiciona sin altura fija en JS */
+.faq-respuesta { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .32s ease; }
+.faq-respuesta > div { overflow: hidden; }
+.faq[data-abierto="true"] .faq-respuesta { grid-template-rows: 1fr; }
+.faq-respuesta p { padding-bottom: 1.2rem; max-width: 74ch; }
+.faq-respuesta ul { padding-bottom: 1.2rem; max-width: 74ch; }
+.faq-respuesta li { margin-bottom: .4rem; }
+
+.destacado {
+  display: inline-block;
+  margin-top: .6rem;
+  padding: .3rem .8rem;
+  font-size: .8rem;
+  font-weight: 700;
+  background: var(--degradado);
+  color: var(--negro);
+  border-radius: 100px;
+}
+.aviso {
+  padding: 1.4rem 1.6rem;
+  border-left: 4px solid var(--rosa);
+  background: var(--sombra-media);
+  font-size: .95rem;
+}
+
+/* ---------- Placeholder ---------- */
+.placeholder { text-align: center; padding-block: clamp(5rem, 18vh, 11rem); }
+.placeholder .hero-titulo { margin-bottom: 1rem; }
+
+/* ---------- Pie ---------- */
+.sitio-pie {
+  border-top: 1px solid var(--borde);
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+  font-size: .88rem;
+  color: var(--texto-suave);
+}
+.pie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+.pie-titulo {
+  font-size: var(--t-mini);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--texto);
+  margin-bottom: .8rem;
+}
+.pie-lista { list-style: none; padding: 0; display: grid; gap: .45rem; }
+.pie-lista a { text-decoration: none; transition: color .2s ease; }
+.pie-lista a:hover { color: var(--rosa); }
+.pie-legal { padding-top: 1.8rem; border-top: 1px solid var(--borde); font-size: .8rem; }
+.pie-logo { width: 150px; height: 94px; color: var(--texto); margin-bottom: 1rem; }
+
+/* ---------- Entrada escalonada ----------
+   Un solo momento de animación al cargar; el resto del sitio queda quieto. */
+@media (prefers-reduced-motion: no-preference) {
+  .revelar { opacity: 0; transform: translateY(18px); animation: revelar .7s cubic-bezier(.2, .7, .3, 1) forwards; }
+  .revelar:nth-child(1) { animation-delay: .05s; }
+  .revelar:nth-child(2) { animation-delay: .15s; }
+  .revelar:nth-child(3) { animation-delay: .25s; }
+  .revelar:nth-child(4) { animation-delay: .35s; }
+  @keyframes revelar { to { opacity: 1; transform: none; } }
+}

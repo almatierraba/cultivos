@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Secciones todavía en preparación: se excluyen del índice hasta tener contenido
+Disallow: /literatura.html
+Disallow: /contacto.html
+
+Sitemap: https://almatierraba.github.io/cultivos/sitemap.xml
