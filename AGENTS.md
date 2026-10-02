@@ -13,6 +13,7 @@ This repository is maintained by an AI agent under human supervision. The human 
 8. If the sandbox or approvals block an action, ask. Never switch to full-access mode or work around the block on your own.
 9. If something is ambiguous or unexpected, stop and ask. Never guess.
 10. Report honestly: what was run, what passed, failed or was not run.
+11. Use the GitHub CLI (gh) as the only GitHub-facing client for this project. Do not use GitHub plugins, connectors or browser tools for repository operations. For Git transport that gh has no native command for, configure gh as Git's credential helper and use Git only to transfer local commits or refs.
 
 ## Project facts (verified)
 - Build: none (static site; no build step) | Test: none configured | Lint/format: none configured | Run: open `index.html` in a browser (`assets/js/sitio.js` documents `file://` support).
